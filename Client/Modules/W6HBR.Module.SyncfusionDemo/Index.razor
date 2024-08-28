@@ -1,0 +1,87 @@
+@using W6HBR.Module.SyncfusionDemo.Services
+@using W6HBR.Module.SyncfusionDemo.Models
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Grids
+
+@namespace W6HBR.Module.SyncfusionDemo
+@inherits ModuleBase
+@inject ISyncfusionDemoService SyncfusionDemoService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<Index> Localizer
+
+@if (_SyncfusionDemos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <SfGrid DataSource="@_SyncfusionDemos" AllowPaging="true">
+            <GridPageSettings PageSize="5"></GridPageSettings>
+    </SfGrid>
+    <br />
+    <br />
+
+    <ActionLink Action="Add" Security="SecurityAccessLevel.Edit" Text="Add SyncfusionDemo" ResourceKey="Add" />
+    <br />
+    <br />
+    @if (@_SyncfusionDemos.Count != 0)
+    {
+        <Pager Items="@_SyncfusionDemos">
+            <Header>
+                <th style="width: 1px;">&nbsp;</th>
+                <th style="width: 1px;">&nbsp;</th>
+                <th>@Localizer["Name"]</th>
+            </Header>
+            <Row>
+                <td><ActionLink Action="Edit" Parameters="@($"id=" + context.SyncfusionDemoId.ToString())" ResourceKey="Edit"  /></td>
+                <td><ActionDialog Header="Delete SyncfusionDemo" Message="Are You Sure You Wish To Delete This SyncfusionDemo?" Action="Delete" Security="SecurityAccessLevel.Edit" Class="btn btn-danger" OnClick="@(async () => await Delete(context))" ResourceKey="Delete"  /></td>
+                <td>@context.Name</td>
+            </Row>
+        </Pager>
+    }
+    else
+    {
+        <p>@Localizer["Message.DisplayNone"]</p>
+    }
+}
+
+@code {
+    public override List<Resource> Resources => new List<Resource>()
+    {
+        new Resource { ResourceType = ResourceType.Script, Url = "_content/Syncfusion.Blazor/styles/bootstrap4.css" },
+        new Resource { ResourceType = ResourceType.Script, Url = "_content/Syncfusion.Blazor/styles/material-dark.css" },
+        new Resource { ResourceType = ResourceType.Stylesheet, Url = ModulePath() + "Module.css" },
+        new Resource { ResourceType = ResourceType.Script, Url = ModulePath() + "Module.js" }
+    };
+
+    List<SyncfusionDemo> _SyncfusionDemos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _SyncfusionDemos = await SyncfusionDemoService.GetSyncfusionDemosAsync(ModuleState.ModuleId);
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Loading SyncfusionDemo {Error}", ex.Message);
+            AddModuleMessage(Localizer["Message.LoadError"], MessageType.Error);
+        }
+    }
+
+    private async Task Delete(SyncfusionDemo SyncfusionDemo)
+    {
+        try
+        {
+            await SyncfusionDemoService.DeleteSyncfusionDemoAsync(SyncfusionDemo.SyncfusionDemoId, ModuleState.ModuleId);
+            await logger.LogInformation("SyncfusionDemo Deleted {SyncfusionDemo}", SyncfusionDemo);
+            _SyncfusionDemos = await SyncfusionDemoService.GetSyncfusionDemosAsync(ModuleState.ModuleId);
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Deleting SyncfusionDemo {SyncfusionDemo} {Error}", SyncfusionDemo, ex.Message);
+            AddModuleMessage(Localizer["Message.DeleteError"], MessageType.Error);
+        }
+    }
+}

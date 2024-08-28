@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <Version>1.0.0</Version>
+    <Product>W6HBR.Module.SyncfusionDemo</Product>
+    <Authors>W6HBR</Authors>
+    <Company>W6HBR</Company>
+    <Description>This module demonstrates the use of the Syncfusion Blazor components.</Description>
+    <Copyright>W6HBR</Copyright>
+    <AssemblyName>W6HBR.Module.SyncfusionDemo.Server.Oqtane</AssemblyName>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\_content\**\*.*" />
+    <None Include="wwwroot\_content\**\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.8" />
+    <PackageReference Include="Syncfusion.Blazor" Version="26.2.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\W6HBR.Module.SyncfusionDemo.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Oqtane.Server"><HintPath>..\..\Oqtane.Framework\Oqtane.Server\bin\Debug\net8.0\Oqtane.Server.dll</HintPath></Reference>
+    <Reference Include="Oqtane.Shared"><HintPath>..\..\Oqtane.Framework\Oqtane.Server\bin\Debug\net8.0\Oqtane.Shared.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>
