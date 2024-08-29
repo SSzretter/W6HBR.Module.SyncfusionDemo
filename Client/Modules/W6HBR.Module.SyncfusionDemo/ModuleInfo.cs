@@ -1,5 +1,7 @@
 using Oqtane.Models;
 using Oqtane.Modules;
+using Oqtane.Shared;
+using System.Collections.Generic;
 
 namespace W6HBR.Module.SyncfusionDemo
 {
@@ -13,7 +15,14 @@ namespace W6HBR.Module.SyncfusionDemo
             ServerManagerType = "W6HBR.Module.SyncfusionDemo.Manager.SyncfusionDemoManager, W6HBR.Module.SyncfusionDemo.Server.Oqtane",
             ReleaseVersions = "1.0.0",
             Dependencies = "W6HBR.Module.SyncfusionDemo.Shared.Oqtane",
-            PackageName = "W6HBR.Module.SyncfusionDemo" 
+            PackageName = "W6HBR.Module.SyncfusionDemo",
+            Resources = new List<Resource>()
+            {
+                new Resource { ResourceType = ResourceType.Script, Url = "_content/Syncfusion.Blazor/styles/bootstrap5.css" },
+                new Resource { ResourceType = ResourceType.Script, Url = "_content/Syncfusion.Blazor/styles/material-dark.css" },
+                new Resource { ResourceType = ResourceType.Stylesheet, Url =  "~/Module.css" },
+                new Resource { ResourceType = ResourceType.Script, Url =  "~/Module.js" }
+            }
         };
     }
 }
